@@ -1,0 +1,2 @@
+- Do lý do của thiết bị lưu trữ vật lý , toàn bộ hệ thống được xây trên khái niệm block ( 512 - 4096 B ) làm đơn vị nguyên tử của IO
+- Là đơn vị nhỏ nhất mà kernel có thể thao tác lên thiết bị lưu trữ  , làm việc trên bộ số của block 

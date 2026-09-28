@@ -1,0 +1,4 @@
+- Bài toán đặt ra khi có nhiều máy chủ muốn cùng truy cập vào 1 file 
+-> sinh ra máy chủ NAS , NAS sẽ tự quản lý dữ liệu dưới dạng file system 
+-> SAN tương tự ý tưởng như vậy nhưng dưới dạng các block dữ liệu thô ( các ổ đĩa ảo )
+	- Máy client tự cài filesystem riêng lên trên  
