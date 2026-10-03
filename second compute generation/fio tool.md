@@ -1,0 +1,1 @@
+[Benchmarking block storage with fio: real IOPS, throughput and tail latency](https://stackharbor.com/en/knowledge-base/fio-storage-benchmark-iops-latency/)

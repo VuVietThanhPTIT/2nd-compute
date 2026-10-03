@@ -23,16 +23,16 @@
 
 ## 0. Tổng quan & tham số
 
-|Thành phần|Giá trị|
-|---|---|
-|Storage Host|`10.11.4.21` (cổng iSCSI `3260`)|
-|KVM Host (`com07`)|`vhhl1c2lab2com07` – `10.11.4.23` (đã có sẵn libvirt và VM `vm01`)|
-|Target IQN|`iqn.2026-09.local.fptcloud:storage.target1`|
-|Backstore|`fileio` – `disk1` – `/var/tmp/disk1.img` – 50G|
-|LUN WWID|`36001405b94ac0b447ed40e5a150b654e`|
-|Thiết bị trên KVM Host|`/dev/sdb` → `/dev/mapper/mpatha` (`dm-0`)|
-|VM|`vm01` (có sẵn) hoặc `test-vm` (tạo mới từ cloud image)|
-|Thiết bị trong VM|`/dev/vdb` (virtio-blk, raw, `cache=none`, `io=native`)|
+| Thành phần             | Giá trị                                                            |
+| ---------------------- | ------------------------------------------------------------------ |
+| Storage Host           | `10.11.4.21` (cổng iSCSI `3260`)                                   |
+| KVM Host (`com07`)     | `vhhl1c2lab2com07` – `10.11.4.23` (đã có sẵn libvirt và VM `vm01`) |
+| Target IQN             | `iqn.2026-09.local.fptcloud:storage.target1`                       |
+| Backstore              | `fileio` – `disk1` – `/var/tmp/disk1.img` – 50G                    |
+| LUN WWID               | `36001405b94ac0b447ed40e5a150b654e`                                |
+| Thiết bị trên KVM Host | `/dev/sdb` → `/dev/mapper/mpatha` (`dm-0`)                         |
+| VM                     | `vm01` (có sẵn) hoặc `test-vm` (tạo mới từ cloud image)            |
+| Thiết bị trong VM      | `/dev/vdb` (virtio-blk, raw, `cache=none`, `io=native`)            |
 
 **Luồng dữ liệu:**
 
@@ -478,14 +478,14 @@ grep -E "IOPS|BW|clat percentiles|50.00th|99.00th" /tmp/result_mixed.log
 
 ### 10.2. fio trên `/dev/vdb` (virtio-blk ← mpatha ← iSCSI)
 
-|Test case|Block size / QD|IOPS|Bandwidth|P50 latency (clat)|P99 latency (clat)|
-|---|---|---|---|---|---|
-|**Random Read**|4K / QD32 / 4 jobs|**80.5k**|315 MiB/s (330 MB/s)|1.53 ms|3.82 ms|
-|**Random Write**|4K / QD32 / 4 jobs|**7,468**|29.2 MiB/s (30.6 MB/s)|17 ms|47 ms|
-|**Sequential Read**|1M / QD8 / 1 job|1,076|**1,077 MiB/s (1,129 MB/s)**|–|–|
-|**Sequential Write**|1M / QD8 / 1 job|272|**272 MiB/s (285 MB/s)**|–|–|
-|**Mixed 70/30 – Read**|4K / QD32 / 4 jobs|15.4k|60.1 MiB/s (63.0 MB/s)|4.75 ms|16.6 ms|
-|**Mixed 70/30 – Write**|4K / QD32 / 4 jobs|6,615|25.8 MiB/s (27.1 MB/s)|4.42 ms|18.7 ms|
+| Test case               | Block size / QD    | IOPS      | Bandwidth                    | P50 latency (clat) | P99 latency (clat) |
+| ----------------------- | ------------------ | --------- | ---------------------------- | ------------------ | ------------------ |
+| **Random Read**         | 4K / QD32 / 4 jobs | **80.5k** | 315 MiB/s (330 MB/s)         | 1.53 ms            | 3.82 ms            |
+| **Random Write**        | 4K / QD32 / 4 jobs | **7,468** | 29.2 MiB/s (30.6 MB/s)       | 17 ms              | 47 ms              |
+| **Sequential Read**     | 1M / QD8 / 1 job   | 1,076     | **1,077 MiB/s (1,129 MB/s)** | –                  | –                  |
+| **Sequential Write**    | 1M / QD8 / 1 job   | 272       | **272 MiB/s (285 MB/s)**     | –                  | –                  |
+| **Mixed 70/30 – Read**  | 4K / QD32 / 4 jobs | 15.4k     | 60.1 MiB/s (63.0 MB/s)       | 4.75 ms            | 16.6 ms            |
+| **Mixed 70/30 – Write** | 4K / QD32 / 4 jobs | 6,615     | 25.8 MiB/s (27.1 MB/s)       | 4.42 ms            | 18.7 ms            |
 
 > Dấu “–”: chưa trích latency cho hai test sequential (lệnh grep ban đầu chỉ lấy `IOPS|BW`). Muốn điền thì chạy lại lệnh ở mục 9 cho `result_seqread.log` và `result_seqwrite.log`.
 

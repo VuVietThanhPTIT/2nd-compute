@@ -4,39 +4,53 @@
     "type": "split",
     "children": [
       {
-        "id": "fe6d017971c08f74",
+        "id": "a142ce394f285e12",
         "type": "tabs",
         "children": [
           {
-            "id": "5cfe0075c23d8935",
+            "id": "770e9841db7d6b95",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Block Device.md",
+                "file": "virtio architecture.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Block Device"
+              "title": "virtio architecture"
             }
           },
           {
-            "id": "66ea5d7deaf01768",
+            "id": "94328d5e21d6c65f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "lab/note.md",
+                "file": "overview kvm + qemu.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "note"
+              "title": "overview kvm + qemu"
+            }
+          },
+          {
+            "id": "91f6746bb2446095",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "lab qemu + kvm + virtio-blk or virtio-scsi.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "lab qemu + kvm + virtio-blk or virtio-scsi"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -98,7 +112,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "4c5c969857901faa",
@@ -204,20 +219,48 @@
       "bases:Create new base": false
     }
   },
-  "active": "66ea5d7deaf01768",
+  "active": "91f6746bb2446095",
   "lastOpenFiles": [
-    "storage/cách linux nhận ổ đĩa khi khởi động.md",
-    "storage/NAS vs SAN.md",
-    "Block Device.md",
-    "hdd vs ssd.md",
+    "Pasted image 20261003234602.png",
+    "virtio architecture.md",
+    "Pasted image 20261003225545.png",
+    "overview virtio.md",
+    "overview kvm + qemu.md",
+    "lab qemu + kvm + virtio-blk or virtio-scsi.md",
+    "img/Pasted image 20261003223059.png",
+    "virtual file system.md",
+    "qemu innovation history.md",
+    "QEMU ,vhost kernel ,vhost-user.md",
+    "img/Pasted image 20261003155054.png",
+    "the linux storage stack diagram.md",
+    "tiêu chí benchmark.md",
+    "Tổng hợp link chưa tìm.md",
+    "Tổng hợp slide , tài liệu.md",
     "Untitled 1.md",
-    "lab/note.md",
-    "img/Pasted image 20260928093145.png",
-    "lab",
-    "img/Pasted image 20260927091035.png",
-    "img",
-    "img/Pasted image 20260927090710.png",
+    "img/Pasted image 20261003161134.png",
+    "img/Pasted image 20261003154507.png",
+    "EPT (Phần cứng - 2 tầng) và Shadow Page Tables vs SPT (Phần mềm - 1 tầng).md",
+    "img/Pasted image 20261003101458.png",
+    "page → page table → TLB → hugepage → virtualization (GVA GPA HPA).md",
+    "img/Pasted image 20261003151323.png",
+    "img/Pasted image 20261003151258.png",
+    "img/Pasted image 20261003151146.png",
+    "img/Pasted image 20261003125605.png",
+    "overview kvm.md",
+    "test.md",
+    "full virtualization vs Paravirtualization.md",
+    "cơ chế guest và host nói chuyện",
+    "lab luồng máy thật.md",
+    "Luồng máy thật đi.md",
+    "posix.md",
     "Welcome.md",
+    "lab tạm.md",
+    "Linux kernel architecture and subsystems..md",
+    "ly-thuyet-scsi-iscsi-virtio-lab.md",
+    "Untitled",
+    "lab/note.md",
+    "lab",
+    "img",
     "storage"
   ]
 }
