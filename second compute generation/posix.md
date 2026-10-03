@@ -94,5 +94,5 @@ __Portable Operating System Interface__  -  IEEE 1003.1 standard  -  defines t
   </g>
 </svg>
 
-![[Pasted image 20261001095013.png]]
+![Pasted image 20261001095013](img/Pasted%20image%2020261001095013.png)
 

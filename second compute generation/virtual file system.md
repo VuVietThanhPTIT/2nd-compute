@@ -1,7 +1,7 @@
 
 
 ### là lớp trừu tượng chung cho các file system ,nhằm tạo ra 1  hệ thống file duy nhất cho hệ thống 
-![[Pasted image 20261001100941.png]]
+![Pasted image 20261001100941](img/Pasted%20image%2020261001100941.png)
 VFS - ( shim layer  )nằm giữa tầng syscall và các filesystem cụ thể. 
 - Userspace gọi I/O chuẩn posix   ( ? e) thực hiện lời gọi hàm I/O chuẩn C. )
 - Thư viện sinh ra system call  , (`sys_open`, `sys_read`...) gửi xuống Kernel.
@@ -11,7 +11,7 @@ VFS - ( shim layer  )nằm giữa tầng syscall và các filesystem cụ thể.
 
 
 
-![[Pasted image 20261001103304.png]]
+![Pasted image 20261001103304](img/Pasted%20image%2020261001103304.png)
 
 
 - Kiến trúc : 
@@ -23,11 +23,11 @@ VFS - ( shim layer  )nằm giữa tầng syscall và các filesystem cụ thể.
 		- Mô tả cấu trúc file trong thư mục : dentry cho biết tên nào nằm trong thư mục nào và trỏ tới inode nào.
 	- inode là bản thân file :
 		-  Bản thân file (metadata, vị trí dữ liệu)
-		- ![[Pasted image 20261001110449.png]]
+		- ![Pasted image 20261001110449](img/Pasted%20image%2020261001110449.png)
 	- Super block : chứa thông tin chung của 1 loại file system 
 		- block size, tổng số block, số inode, trạng thái filesystem...
 		- VD : FAT 
 			- block size 512 byte ( 1 lần đọc và 1 lần ghi ) do vậy có 2 loại là size và size on disk 
 			- max file 4 G
-	![[Pasted image 20261001111629.png]]
-	![[Pasted image 20261001111823.png]]
+	![Pasted image 20261001111629](img/Pasted%20image%2020261001111629.png)
+	![Pasted image 20261001111823](img/Pasted%20image%2020261001111823.png)

@@ -39,4 +39,4 @@ Nếu xét rộng ra toàn bộ bức tranh ảo hóa:
 
 ----
 
-![[Pasted image 20261002165516.png]]
+![Pasted image 20261002165516](img/Pasted%20image%2020261002165516.png)

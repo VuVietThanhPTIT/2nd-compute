@@ -4,7 +4,7 @@
 
 
 sdd 
-- ![[Pasted image 20260927090710.png]]![[Pasted image 20260927091035.png]]
+- ![Pasted image 20260927090710](img/Pasted%20image%2020260927090710.png) ![Pasted image 20260927091035](img/Pasted%20image%2020260927091035.png)
 - 1 Channel — đường truyền vật lý riêng biệt đến controller của ssd 
 - 1 chip ( bên trong channel )
 - 1 die ( nhiều bên trong 1 chip )

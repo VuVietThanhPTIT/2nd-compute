@@ -1,6 +1,6 @@
 # LAB: ĐO ĐẠC OVERHEAD MEMCPY TRONG LUỒNG I/O KVM/QEMU VIRTIO
 
-![[Pasted image 20261003223059.png]]
+![Pasted image 20261003223059](img/Pasted%20image%2020261003223059.png)
 
 ## 1. Mục tiêu thí nghiệm
 
@@ -44,7 +44,7 @@ Address space của process QEMU (trên host)
 └─────────────────────────────────────────────────┘
 ```
 
-![[Pasted image 20261003234602.png]]
+![Pasted image 20261003234602](img/Pasted%20image%2020261003234602.png)
 
 ## 2. Thành phần
 

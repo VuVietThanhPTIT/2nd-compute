@@ -1,14 +1,14 @@
 
-![[Linux-storage-stack-diagram_v6.18_page_1.png]]
+![Linux-storage-stack-diagram_v6.18_page_1](img/Linux-storage-stack-diagram_v6.18_page_1.png)
 
 https://youtu.be/hCKruOlLPIQ?si=pd88Eyu8xZwXDcuC
 
-![[Pasted image 20261001140616.png]]
-![[Pasted image 20261001140733.png]]
-![[Pasted image 20261001140747.png]]
+![Pasted image 20261001140616](img/Pasted%20image%2020261001140616.png)
+![Pasted image 20261001140733](img/Pasted%20image%2020261001140733.png)
+![Pasted image 20261001140747](img/Pasted%20image%2020261001140747.png)
 
-![[Pasted image 20261001140939.png]]
-![[Pasted image 20261001140944.png]]
+![Pasted image 20261001140939](img/Pasted%20image%2020261001140939.png)
+![Pasted image 20261001140944](img/Pasted%20image%2020261001140944.png)
 
 
 Luồng đọc : 

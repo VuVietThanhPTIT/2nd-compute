@@ -1,7 +1,7 @@
-![[Pasted image 20261003101458.png]]
-![[Pasted image 20261003101702.png]]
-![[Pasted image 20261003101638.png]]
-![[Pasted image 20261003101642.png]]
+![Pasted image 20261003101458](img/Pasted%20image%2020261003101458.png)
+![Pasted image 20261003101702](img/Pasted%20image%2020261003101702.png)
+![Pasted image 20261003101638](img/Pasted%20image%2020261003101638.png)
+![Pasted image 20261003101642](img/Pasted%20image%2020261003101642.png)
 
 ## 1 , Luồng khởi tạo : 
 - qemu điều khiển kvm thông qua /dev/kvm  bằng các syscall ioctl()

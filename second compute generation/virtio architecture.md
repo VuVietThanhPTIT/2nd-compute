@@ -1,13 +1,13 @@
 
-![[Pasted image 20261003154507.png]]
+![Pasted image 20261003154507](img/Pasted%20image%2020261003154507.png)
 # 1 , Kiến trúc 3 phần : 
 - Driver ( front - end ) : nằm trong kernel của guest , nhận I/ O từ tiến trình người dùng , chuyển cho device , rồi nhận kq 
 - Device ( backend ) nằm trong hypervisor ( ở đây là qemu ) nhận request và giao việc cho phần cứng của host 
 - virtualqueue : queue hàng đợi yêu cầu được cả driver và device cùng nhìn thấy trong ram   , vring là cách implent code hàng đợi đó 
 Figure 3 below shows Qemu’s version of the VirtQueue and VRing data structures.
-![[Pasted image 20261003155054.png]]
+![Pasted image 20261003155054](img/Pasted%20image%2020261003155054.png)
 
-For example, figure 4 below shows the Linux kernel’s version of its VirtQueue and VRing data structures.![[Pasted image 20261003161134.png]]
+For example, figure 4 below shows the Linux kernel’s version of its VirtQueue and VRing data structures.![Pasted image 20261003161134](img/Pasted%20image%2020261003161134.png)
 - VRings :
 	- Each VirtQueue can have up to, and usually does, three types of VRings (or areas):
 		- Descriptor ring (descriptor area)
@@ -17,7 +17,7 @@ For example, figure 4 below shows the Linux kernel’s version of its VirtQueue 
 
 ### **The VirtIO Driver Operations**
 - virio blk or scsi convert the block i/o request into a desscriptor chain and submits it to a virtual queue 
-- ![[Pasted image 20261003225545.png]]
+- ![Pasted image 20261003225545](img/Pasted%20image%2020261003225545.png)
 The **Descriptor Table** contains descriptors (virtq_desc) that describe guest memory buffers through fields such as the guest-physical address (addr), buffer length (len), descriptor flags (flags), and an optional pointer to the next descriptor in the chain (next).
 
 By linking descriptors in the next field, the driver can construct descriptor chains that allow a single I/O request to reference multiple buffers, such as a request header, a data buffer, and a completion status buffer.

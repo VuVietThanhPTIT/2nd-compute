@@ -1,4 +1,4 @@
-![[Pasted image 20261001084618.png]]
+![Pasted image 20261001084618](img/Pasted%20image%2020261001084618.png)
 
 The Linux kernel operates as the bridge between system hardware and user-space applications. At its core, it is organized into three major functional pillars—**Process Management**, **Memory Management**, and the **I/O Subsystem**—all accessed via the **System Call Interface (SCI)**.
 ### Core Subsystems of the Linux Kernel
