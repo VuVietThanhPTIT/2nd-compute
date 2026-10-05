@@ -96,3 +96,65 @@ perf report --stdio | grep -E "memcpy|copy_user"
 
 Nếu trong kết quả xuất hiện các hàm như `memcpy_erms`, `copy_user_generic_string`, hoặc `qemu_iovec_to_buf`, bạn chỉ cần chụp màn hình lại và đính kèm vào báo cáo. Đó chính là **bằng chứng thực nghiệm xác đáng nhất** trả lời cho câu hỏi của mentor.
 
+## Nguyên tắc
+
+Để xây dựng một hệ thống lưu trữ có độ trễ cực thấp (Sub-millisecond/Microsecond Latency) và thông lượng hàng triệu IOPS, mọi tầng kiến trúc từ ứng dụng, máy ảo đến phần cứng bắt buộc phải tuân thủ nghiêm ngặt 5 nguyên tắc vi kiến trúc bất biến sau:
+
+---
+
+### 1. Nguyên tắc Bộ nhớ & Triệt tiêu Sao chép (Memory Alignment & Zero-Copy Invariants)
+
+* **Căn chỉnh địa chỉ biên (Memory Alignment) là điều kiện tiên quyết:** Mọi buffer do ứng dụng hay Guest cấp phát bắt buộc phải căn chỉnh theo bội số của sector/page vật lý (thường là 4096 bytes). Nếu lệch biên dù chỉ 1 byte, toàn bộ nỗ lực Zero-Copy sụp đổ ngay lập tức: Kernel và QEMU sẽ âm thầm kích hoạt **Bounce Buffer** (SWIOTLB), buộc CPU chạy vòng lặp `memcpy` để dàn phẳng dữ liệu trước khi giao cho phần cứng.
+* **Ghim bộ nhớ vật lý (Memory Pinning) bắt buộc trước khi kích hoạt DMA:** Phần cứng (NIC/SSD) chỉ đọc/ghi trực tiếp vào khung trang RAM vật lý (Physical Address). Mọi trang nhớ nằm trong đường dẫn I/O phải được khóa chặt bằng `pin_user_pages()`, `mlock()` hoặc cấp phát từ **Pinned Hugepages (2 MiB / 1 GiB)** để ngăn tuyệt đối hệ điều hành tráo trang (Paging), di dời trang (Compaction) hay xả ra swap trong lúc truyền dẫn.
+* **Mô hình bộ nhớ dùng chung (Shared Memory First):** Dữ liệu truyền qua các ranh giới ảo hóa (Guest $\to$ Host $\to$ Userspace Target) không bao giờ được gửi qua cơ chế IPC sao chép (pipe, socket payload). Không gian địa chỉ phải được ánh xạ dùng chung (`MAP_SHARED`, Hugepages) để các tiến trình chỉ truyền con trỏ và descriptor thay vì truyền payload.
+
+---
+
+### 2. Nguyên tắc Chuỗi Dịch Địa chỉ (Address Space Translation Integrity)
+
+* **Bảo toàn ánh xạ từ trên xuống dưới (End-to-End Address Linearity):** Chuỗi chuyển đổi 5 cấp:
+
+$$\text{Guest VA} \longrightarrow \text{GPA} \longrightarrow \text{Host VA} \longrightarrow \text{Host PA} \longrightarrow \text{IOVA}$$
+
+
+
+phải được tối ưu hóa cấu trúc bảng trang. Càng nhiều tầng phân trang trung gian, tỷ lệ rớt bộ nhớ đệm dịch địa chỉ (**TLB Miss**) của CPU càng cao. Bắt buộc phải sử dụng **Static Hugepages** để giảm độ sâu của cây phân trang Extended Page Tables (EPT).
+* **Ủy quyền hoàn toàn cho IOMMU bảo vệ:** CPU không bao giờ can thiệp vào việc kiểm tra tính hợp lệ của từng byte địa chỉ phần cứng khi truyền tin. Trách nhiệm dịch và cách ly địa chỉ phải được bàn giao hoàn toàn cho phần cứng **IOMMU (Intel VT-d / AMD-Vi)** thông qua các bảng ánh xạ DMA.
+
+---
+
+### 3. Nguyên tắc Mô hình Thực thi: Polling vs. Interrupts
+
+* **Cơ chế ngắt (Interrupt-driven) có sàn trễ cứng (Hardware Latency Floor):** Mô hình ngắt truyền thống (HardIRQ $\to$ SoftIRQ $\to$ Context Switch) chỉ phù hợp cho hệ thống có tải I/O thấp và cần tiết kiệm điện năng. Khi tốc độ I/O vượt ngưỡng vài trăm nghìn IOPS, chi phí xử lý ngắt và chuyển đổi ngữ cảnh sẽ bóp nghẹt CPU, dẫn đến bão ngắt (Interrupt Storm) và làm vọt trễ **P99 / P99.99**.
+* **Đổi 100% tài nguyên CPU lấy tính tiền định (Deterministic Latency):** Muốn đạt độ trễ tiệm cận phần cứng, bắt buộc phải chuyển sang **Polling Mode Driver (PMD)**.
+* **Nguyên tắc cô lập CPU (Core Isolation):** Các CPU Core được giao nhiệm vụ chạy Polling (như SPDK Reactor thread) bắt buộc phải được cách ly hoàn toàn khỏi bộ điều phối chung của Linux (`isolcpus`, `nohz_full`, gán `taskset`/`numactl`). Một CPU Core đã chạy Polling thì không được chia sẻ cho bất kỳ tiến trình nào khác để tránh hiện tượng CPU Jitter.
+
+---
+
+### 4. Nguyên tắc Hàng đợi: Share-Nothing & Khóa đồng bộ (Lockless Design)
+
+* **Quy tắc ánh xạ 1:1 từ đầu đến cuối (Per-Core Queue Mapping):**
+
+$$\text{1 vCPU} \longleftrightarrow \text{1 Virtqueue} \longleftrightarrow \text{1 Worker Thread} \longleftrightarrow \text{1 Hardware Queue Pair (QP)}$$
+
+
+
+Tuyệt đối không sử dụng mô hình $N:1$ (nhiều vCPU hoặc nhiều luồng dùng chung một hàng đợi thiết bị). Bất kỳ điểm giao cắt nào dùng chung hàng đợi đều bắt buộc phải dùng Mutex hoặc Spinlock; dưới tải I/O cao, tranh chấp khóa (Lock Contention) sẽ khiến hiệu năng suy giảm theo hàm mũ.
+* **Tận dụng bộ đệm vòng không khóa (Lockless Ring Buffers):** Toàn bộ việc trao đổi công việc giữa bên sản xuất (Producer) và bên tiêu thụ (Consumer) phải diễn ra thông qua các mảng vòng tròn tự quản lý con trỏ `Head` và `Tail` (như Virtqueue Split/Packed Ring, DPDK Ring), sử dụng các rào cản bộ nhớ (Memory Barriers) nguyên tử thay vì khóa hệ điều hành.
+
+---
+
+### 5. Nguyên tắc Phân lập Kiến trúc: Data Plane vs. Control Plane
+
+* **Triệt tiêu toàn bộ System Call trên Hot Datapath:** Trong lúc truyền nhận I/O, đường dẫn dữ liệu (Data Plane) không được phép thực thi bất kỳ lời gọi hệ thống (`syscall`) nào làm đổi quyền CPU (Ring 3 $\to$ Ring 0) và không được gọi các hàm cấp phát bộ nhớ động (`malloc`, `kmalloc`).
+* **Tiền cấp phát tài nguyên (Pre-allocation):** Toàn bộ metadata, cấu trúc lệnh, descriptor và buffer phải được cấp phát sẵn từ các bộ nhớ đệm dùng chung (**Mempool**) ngay trong giai đoạn khởi động (Control Plane). Trong suốt quá trình chạy I/O, hệ thống chỉ tái sử dụng bộ nhớ này mà không sinh/hủy đối tượng.
+* **Cô lập hoàn toàn Control Plane:** Các tác vụ như dò tìm thiết bị (Discovery), xác thực (CHAP), đàm phán tham số phiên, quản lý API RPC, và thu gom rác bộ nhớ phải chạy ở các luồng phụ riêng biệt, hoàn toàn tách rời khỏi các Core CPU đang phục vụ Data Plane.
+
+---
+
+### 6. Nguyên tắc Căn chỉnh Phần cứng & Thấu hiểu NUMA (NUMA Locality)
+
+* **Bắt buộc đồng bộ nút NUMA (Strict NUMA Binding):** Dữ liệu RAM máy ảo, luồng CPU xử lý I/O (IOThread / SPDK Reactor), và khe cắm PCIe của card mạng (NIC / NVMe SSD) **bắt buộc phải nằm trên cùng một Socket/NUMA Node**.
+* **Hậu quả vi phạm NUMA:** Nếu ứng dụng nằm ở NUMA Node 0 nhưng card mạng cắm ở bus PCIe của NUMA Node 1, toàn bộ dữ liệu DMA và thao tác đọc bộ đệm phải chạy vòng qua cầu nối liên socket (Intel UPI / AMD Infinity Fabric). Điều này lập tức tăng gấp đôi độ trễ truy cập RAM ($40 - 80\ \text{ns}$ phát sinh thêm cho mỗi lượt truy cập), gây nghẽn băng thông liên kết CPU và phá hỏng đường cong Tail Latency.
+
+Bất kỳ giải pháp lưu trữ nào — dù là tinh chỉnh Kernel hiện tại hay di chuyển sang SPDK vhost-user-blk + NVMe-oF — đều phải lấy 6 nguyên tắc này làm hệ quy chiếu đánh giá. Một giải pháp chỉ thực sự đạt độ trễ tối ưu khi nó loại bỏ được toàn bộ các điểm vi phạm: không có bounce buffer, không có tranh chấp lock liên core, không có bão ngắt phần cứng, và không có các cú nhảy bus chéo NUMA.

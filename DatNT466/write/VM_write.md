@@ -35,6 +35,7 @@
 
 <a id="mo-dau"></a>
 
+![alt text](image.png)
 ## Mở đầu nguyên văn
 
 <!-- ORIGINAL 0 BEGIN -->
