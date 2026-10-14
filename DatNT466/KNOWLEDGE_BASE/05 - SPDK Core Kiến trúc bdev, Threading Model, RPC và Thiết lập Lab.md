@@ -3,7 +3,7 @@
 > - **Bài 03:** Máy ảo Guest đẩy yêu cầu I/O qua `virtqueue` trên bộ nhớ chia sẻ (Shared Memory).
 > - **Bài 04:** Compute Host giao tiếp với mảng đĩa NetApp SDS qua mạng bằng giao thức `NVMe-oF` (TCP hoặc RoCEv2).
 > - **Bài 05:** Đặt **SPDK** vào đúng vị trí trung tâm trên Compute Host để làm nhạc trưởng: **SPDK nhận yêu cầu từ VM bằng gì, biểu diễn ổ đĩa bên trong nó bằng gì, và bắn gói tin ra card mạng bằng gì?**
-
+![alt text](image.png)
 ## Mục lục
 1. Bảng thuật ngữ
 2. Nội dung kiến thức và kết quả cần đạt
@@ -46,7 +46,32 @@ Sau bài học này, bạn cần:
 6. **Xây dựng tư duy tách rời cho Job 1**: Triển khai thành công lab thử nghiệm với `malloc bdev` trước khi phụ thuộc vào phần cứng SAN/RDMA thật.
 
 ---
+**SPDK (Storage Performance Development Kit)** là bộ công cụ và thư viện mã nguồn mở (do Intel khởi xướng) giúp xây dựng các ứng dụng lưu trữ khối (block storage) hiệu năng cao với độ trễ siêu thấp bằng cách **chuyển toàn bộ luồng xử lý I/O từ Kernel Space lên User Space**.
 
+---
+
+### 3 Trụ cột kiến trúc cốt lõi của SPDK
+
+* **Kernel Bypass (Bỏ qua nhân Linux):** SPDK sở hữu các driver thiết bị (NVMe, vhost, RDMA NIC) chạy hoàn toàn ở User Space (thông qua cơ chế VFIO/UIO). Các thao tác I/O đọc/ghi trực tiếp tới phần cứng mà không phải đi qua System Call, VFS hay tầng Block Layer (`blk-mq`) của kernel, loại bỏ hoàn toàn chi phí chuyển đổi ngữ cảnh (Context Switch).
+* **Asynchronous Polling Mode (Thăm dò thay vì ngắt):** Thay vì đợi thiết bị phần cứng phát ngắt (Hardware Interrupt) để đánh thức CPU, SPDK sử dụng **Polled-Mode Driver (PMD)**. Một CPU core chuyên dụng sẽ liên tục thăm dò các hàng đợi hoàn tất (Completion Queue), giúp nhận diện I/O hoàn thành ngay lập tức ở mức nano-giây và giữ cho đường cong độ trễ đuôi (Tail Latency P99/P99.99) cực kỳ phẳng.
+* **Lockless & Share-Nothing (Kiến trúc không khóa):** Mỗi luồng xử lý của SPDK được gán cố định vào một CPU core vật lý (CPU Pinning). Mỗi core quản lý riêng cấu trúc dữ liệu, hàng đợi I/O (`I/O Channel`) và bộ nhớ đệm mà không chia sẻ với core khác, triệt tiêu hoàn toàn sự tranh chấp khóa (Mutex/Spinlock).
+
+---
+
+### Các thành phần chính của SPDK
+
+* **SPDK `bdev` (Block Device Layer):** Tầng trừu tượng hóa thiết bị khối thống nhất ở User Space (tương tự như block layer của kernel). Mọi backend như RAM disk (`malloc`), NVMe cắm trực tiếp (PCIe), hay NVMe từ xa qua mạng (`NVMe-oF`) đều được chuẩn hóa thành một `bdev`.
+* **Vhost Target (`vhost-user-blk` / `vhost-user-scsi`):** Cung cấp giao diện đĩa ảo cho hypervisor (QEMU/KVM) thông qua bộ nhớ chia sẻ (Shared Memory/Hugepages), cho phép máy ảo gửi I/O thẳng tới SPDK mà không cần qua Host Kernel.
+* **NVMe-oF (NVMe over Fabrics):** Đóng vai trò là Target (máy chủ lưu trữ) hoặc Initiator (máy trạm kết nối) để truyền các lệnh NVMe qua mạng Ethernet bằng giao thức TCP hoặc RDMA (RoCEv2).
+* **JSON-RPC Interface:** Cổng điều khiển (Control Plane) cho phép cấu hình động tài nguyên (tạo/xóa bdev, gắn vhost controller) trong khi ứng dụng vẫn đang chạy.
+
+---
+
+### Đánh đổi kỹ thuật (Trade-offs)
+
+* **Tiêu tốn 100% CPU:** Do chạy vòng lặp Polling liên tục, các CPU core được phân bổ cho SPDK luôn hiển thị mức sử dụng 100% trên hệ điều hành, ngay cả khi không có I/O.
+* **Không dùng được công cụ kernel chuẩn:** Các thiết bị do SPDK quản lý không xuất hiện trong thư mục `/dev/`, do đó các công cụ Linux thông thường như `lsblk`, `fdisk`, `iostat` không thể nhận diện hay giám sát trực tiếp.
+* **Mất các tính năng đĩa của QEMU:** Khi sử dụng `vhost-user-blk`, QEMU bypass hoàn toàn block layer của nó, đồng nghĩa các tính năng như file snapshot `qcow2`, sao lưu gia tăng qua QMP của QEMU sẽ không thể hoạt động mà phải chuyển xuống tầng storage backend xử lý.
 ## 1. Vị trí thực tế của SPDK trong chuỗi truyền dẫn I/O
 
 SPDK trên máy chủ Compute Host là một **tiến trình User Space độc lập** (thường là daemon `spdk_tgt`). Nó đóng vai trò làm cây cầu bắc ngang giữa máy ảo và mạng lưu trữ:
