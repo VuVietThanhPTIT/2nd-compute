@@ -470,11 +470,11 @@ grep -E "IOPS|BW|clat percentiles|50.00th|99.00th" /tmp/result_mixed.log
 
 ### 10.1. Network baseline (com07 → Storage Host)
 
-|Chỉ số|Giá trị|
-|---|---|
-|Ping avg|0.038 ms|
-|iperf3 1 luồng|8.61 Gbit/s|
-|iperf3 4 luồng|9.47 Gbit/s|
+| Chỉ số         | Giá trị     |
+| -------------- | ----------- |
+| Ping avg       | 0.038 ms    |
+| iperf3 1 luồng | 8.61 Gbit/s |
+| iperf3 4 luồng | 9.47 Gbit/s |
 
 ### 10.2. fio trên `/dev/vdb` (virtio-blk ← mpatha ← iSCSI)
 

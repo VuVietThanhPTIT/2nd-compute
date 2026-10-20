@@ -1,0 +1,2 @@
+- Falco phát hiện hành vi lúc runtime , là agent giám sát và phát hiện ở tầng kernel , quan sát các event như syscall dựa trên rule tùy chỉnh bổ sung metadata từ container runtime và kubernetes  
+- 

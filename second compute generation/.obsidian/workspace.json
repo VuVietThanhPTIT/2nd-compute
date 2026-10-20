@@ -8,49 +8,119 @@
         "type": "tabs",
         "children": [
           {
-            "id": "770e9841db7d6b95",
+            "id": "9febb88cf6cf5677",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "virtio architecture.md",
+                "file": "lab/Lab Benchmark Storage 3 trục Local → VM local → VM iSCSI (1).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "virtio architecture"
+              "title": "Lab Benchmark Storage 3 trục Local → VM local → VM iSCSI (1)"
             }
           },
           {
-            "id": "94328d5e21d6c65f",
+            "id": "04d3291d4af29e59",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "overview kvm + qemu.md",
+                "file": "lab/Lab Benchmark Storage 3 trục Local → VM local → VM iSCSI (1).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "overview kvm + qemu"
+              "title": "Lab Benchmark Storage 3 trục Local → VM local → VM iSCSI (1)"
             }
           },
           {
-            "id": "91f6746bb2446095",
+            "id": "8a0a8af79cf99061",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "lab qemu + kvm + virtio-blk or virtio-scsi.md",
+                "file": "lab/làm lại lab iSCSI Storage → KVM (Multipath) → VM virtio-blk + Benchmark fio.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lab qemu + kvm + virtio-blk or virtio-scsi"
+              "title": "làm lại lab iSCSI Storage → KVM (Multipath) → VM virtio-blk + Benchmark fio"
+            }
+          },
+          {
+            "id": "75e0aacbf3f9efa4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Tìm.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Tìm"
+            }
+          },
+          {
+            "id": "f626dd13b54f0ad5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "các tool trace/ftrace.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ftrace"
+            }
+          },
+          {
+            "id": "f3093efd732bd7c3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "các tool trace/falco.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "falco"
+            }
+          },
+          {
+            "id": "98678c1c5a1b33fa",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "lab/vm-bench-cheatsheet.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "vm-bench-cheatsheet"
+            }
+          },
+          {
+            "id": "9b6e3b8a60c690f1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "full virtualization vs Paravirtualization.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "full virtualization vs Paravirtualization"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -112,8 +182,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "4c5c969857901faa",
@@ -129,7 +198,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Block Device.md",
+                "file": "lab qemu + kvm + virtio-blk or virtio-scsi.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -148,7 +217,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Block Device.md",
+                "file": "lab qemu + kvm + virtio-blk or virtio-scsi.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -219,46 +288,49 @@
       "bases:Create new base": false
     }
   },
-  "active": "91f6746bb2446095",
+  "active": "98678c1c5a1b33fa",
   "lastOpenFiles": [
-    "img/Pasted image 20261003234602.png",
-    "img/Pasted image 20261003225545.png",
-    "img/Linux-storage-stack-diagram_v6.18_page_1.png",
-    "Pasted image 20261003234602.png",
-    "virtio architecture.md",
-    "Pasted image 20261003225545.png",
-    "overview virtio.md",
-    "overview kvm + qemu.md",
-    "lab qemu + kvm + virtio-blk or virtio-scsi.md",
-    "img/Pasted image 20261003223059.png",
-    "virtual file system.md",
-    "qemu innovation history.md",
-    "QEMU ,vhost kernel ,vhost-user.md",
-    "img/Pasted image 20261003155054.png",
-    "the linux storage stack diagram.md",
-    "tiêu chí benchmark.md",
-    "Tổng hợp link chưa tìm.md",
-    "Tổng hợp slide , tài liệu.md",
-    "Untitled 1.md",
-    "img/Pasted image 20261003161134.png",
-    "img/Pasted image 20261003154507.png",
-    "EPT (Phần cứng - 2 tầng) và Shadow Page Tables vs SPT (Phần mềm - 1 tầng).md",
-    "img/Pasted image 20261003101458.png",
-    "page → page table → TLB → hugepage → virtualization (GVA GPA HPA).md",
-    "img/Pasted image 20261003151323.png",
-    "overview kvm.md",
-    "test.md",
-    "full virtualization vs Paravirtualization.md",
-    "cơ chế guest và host nói chuyện",
-    "lab luồng máy thật.md",
-    "Luồng máy thật đi.md",
-    "posix.md",
-    "Welcome.md",
-    "lab tạm.md",
-    "Linux kernel architecture and subsystems..md",
-    "ly-thuyet-scsi-iscsi-virtio-lab.md",
-    "Untitled",
+    "linux disk diagram.md",
+    "các tool trace/falco.md",
+    "các tool trace/strace.md",
+    "các tool trace/ftrace.md",
+    "Tìm.md",
+    "strace",
+    "lab/làm lại lab iSCSI Storage → KVM (Multipath) → VM virtio-blk + Benchmark fio.md",
+    "img/mixed_read.png",
+    "img/randwrite.png",
+    "img/randread.png",
+    "img/overview_iops.png",
+    "img/mixed_write.png",
+    "lab/Lab Benchmark Storage 3 trục Local → VM local → VM iSCSI (1).md",
     "lab/note.md",
+    "lab/vm-bench-cheatsheet.md",
+    "Falco đo syscall , memcpy.md",
+    "lab/Báo cáo benchmark storage 3 trục Local → Host iSCSI → VM iSCSI.md",
+    "Báo cáo benchmark storage 3 trục Local → Host iSCSI → VM iSCSI.md",
+    "vm-bench-cheatsheet.md",
+    "các bước tạo VM.md",
+    "qemu innovation history.md",
+    "EPT (Phần cứng - 2 tầng) và Shadow Page Tables vs SPT (Phần mềm - 1 tầng).md",
+    "hdd vs ssd.md",
+    "full virtualization vs Paravirtualization.md",
+    "cài lại os cho vhhl1c2lab2com07.md",
+    "virtual file system.md",
+    "page → page table → TLB → hugepage → virtualization (GVA GPA HPA).md",
+    "ly-thuyet-scsi-iscsi-virtio-lab.md",
+    "Linux kernel architecture and subsystems..md",
+    "lab qemu + kvm + virtio-blk or virtio-scsi.md",
+    "lab luồng máy thật.md",
+    "cheatseet.md",
+    "img/Pasted image 20261015134343.png",
+    "img/Pasted image 20261015111451.png",
+    "img/Pasted image 20261015110925.png",
+    "img/Pasted image 20261015110458.png",
+    "img/Pasted image 20261015105623.png",
+    "cinder/imgg",
+    "cinder",
+    "cơ chế guest và host nói chuyện",
+    "các tool trace",
     "lab",
     "img",
     "storage"

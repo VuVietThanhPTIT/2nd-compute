@@ -1,0 +1,2 @@
+- Bản chất : strace bắt các syscall mà 1 chương trình ( và tùy chọn cả process con ) gọi xuống kernel , dùng để xem chương trình mở file nào , syscall nào fail ove kèm code hoặc process đang kẹt ở syscall nào 
+- strace dựa chủ yếu vào syscall ptrace , cùng là thứ gdb dùng , luồng cơ bản tracer attach và tracee , gọi ptrace_syscall , đẻ traceee dùng ở ,ỗi lần vào / ra syscall rồii đọc register ( số syscall , tham số , return value )

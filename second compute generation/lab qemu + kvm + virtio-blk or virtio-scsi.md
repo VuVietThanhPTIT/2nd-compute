@@ -438,3 +438,272 @@ Attaching 6 probes...
 ## 7. Tài liệu tham khảo
 
 [Understanding Disk I/O in QEMU/KVM with VirtIO | Veeam Community Resource Hub](https://community.veeam.com/blogs-and-podcasts-57/understanding-disk-i-o-in-qemu-kvm-with-virtio-13460)
+
+
+
+----
+Trace chi tiết từng lệnh : 
+```
+sudo strace dd if=/dev/zero of=/dev/sda bs=4096 count=1 oflag=direct
+
+```
+
+```
+ubuntu@ubuntu:~$ sudo strace dd if=/dev/zero of=/dev/sda bs=4096 count=1 oflag=direct
+execve("/usr/bin/dd", ["dd", "if=/dev/zero", "of=/dev/sda", "bs=4096", "count=1", "oflag=direct"], 0x7ffce0447fc8 /* 19 vars */) = 0
+brk(NULL)                               = 0x564868b68000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffe31a95580) = -1 EINVAL (Invalid argument)
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6724a76000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=21228, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 21228, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a70000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P\237\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+pread64(3, "\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0jl\265\250\17\325\345\273[\363\256\252\21\32\335\230"..., 68, 896) = 68
+newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=2220400, ...}, AT_EMPTY_PATH) = 0
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+mmap(NULL, 2264656, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f6724847000
+mprotect(0x7f672486f000, 2023424, PROT_NONE) = 0
+mmap(0x7f672486f000, 1658880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000) = 0x7f672486f000
+mmap(0x7f6724a04000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1bd000) = 0x7f6724a04000
+mmap(0x7f6724a5d000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x215000) = 0x7f6724a5d000
+mmap(0x7f6724a63000, 52816, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f6724a63000
+close(3)                                = 0
+mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6724844000
+arch_prctl(ARCH_SET_FS, 0x7f6724844740) = 0
+set_tid_address(0x7f6724844a10)         = 2884
+set_robust_list(0x7f6724844a20, 24)     = 0
+rseq(0x7f67248450e0, 0x20, 0, 0x53053053) = 0
+mprotect(0x7f6724a5d000, 16384, PROT_READ) = 0
+mprotect(0x564862500000, 4096, PROT_READ) = 0
+mprotect(0x7f6724ab0000, 8192, PROT_READ) = 0
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+munmap(0x7f6724a70000, 21228)           = 0
+rt_sigaction(SIGINT, NULL, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigaction(SIGUSR1, {sa_handler=0x5648624f48a0, sa_mask=[INT USR1], sa_flags=SA_RESTORER, sa_restorer=0x7f6724889520}, NULL, 8) = 0
+rt_sigaction(SIGINT, {sa_handler=0x5648624f4890, sa_mask=[INT USR1], sa_flags=SA_RESTORER|SA_NODEFER|SA_RESETHAND|0xffffffff00000000, sa_restorer=0x7f6724889520}, NULL, 8) = 0
+getrandom("\x65\x02\xb6\x3e\x1a\x1e\x62\x1e", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x564868b68000
+brk(0x564868b89000)                     = 0x564868b89000
+openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=3048928, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 3048928, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f672455b000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/share/locale/locale.alias", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=2996, ...}, AT_EMPTY_PATH) = 0
+read(3, "# Locale name alias data base.\n#"..., 4096) = 2996
+read(3, "", 4096)                       = 0
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=258, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 258, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724aaf000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache", O_RDONLY) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=27002, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 27002, PROT_READ, MAP_SHARED, 3, 0) = 0x7f6724554000
+close(3)                                = 0
+futex(0x7f6724a62a6c, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=23, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 23, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a75000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=47, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 47, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a74000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=127, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 127, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a73000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_NAME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_NAME", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=62, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 62, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a72000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_PAPER", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_PAPER", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=34, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 34, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a71000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFDIR|0755, st_size=4096, ...}, AT_EMPTY_PATH) = 0
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=48, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 48, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a70000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=270, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 270, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724553000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=1406, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 1406, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724552000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_TIME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_TIME", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=3360, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 3360, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724551000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=50, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 50, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724550000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/C.UTF-8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/C.utf8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=353616, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 353616, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f67244f9000
+close(3)                                = 0
+openat(AT_FDCWD, "/dev/zero", O_RDONLY) = 3
+dup2(3, 0)                              = 0
+close(3)                                = 0
+lseek(0, 0, SEEK_CUR)                   = 0
+openat(AT_FDCWD, "/dev/sda", O_WRONLY|O_CREAT|O_TRUNC|O_DIRECT, 0666) = 3
+dup2(3, 1)                              = 1
+close(3)                                = 0
+read(0, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 4096) = 4096
+write(1, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 4096) = 4096
+close(0)                                = 0
+close(1)                                = 0
+openat(AT_FDCWD, "/usr/share/locale/C.UTF-8/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/share/locale/C.utf8/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/share/locale/C/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/share/locale-langpack/C.UTF-8/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/share/locale-langpack/C.utf8/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/share/locale-langpack/C/LC_MESSAGES/coreutils.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+write(2, "1+0 records in\n1+0 records out\n", 311+0 records in
+1+0 records out
+) = 31
+write(2, "4096 bytes (4.1 kB, 4.0 KiB) cop"..., 614096 bytes (4.1 kB, 4.0 KiB) copied, 0.000361159 s, 11.3 MB/s) = 61
+write(2, "\n", 1
+)                       = 1
+close(2)                                = 0
+exit_group(0)                           = ?
++++ exited with 0 +++
+
+```
+Nhóm 1: Khởi động chương trình & Xin cấp phát RAM
+- hàm execve -> khởi tạo lệnh ( execve , exec , vector of argurments , enviroments )
+- `brk` -  Kiểm tra ranh giới bộ nhớ
+
+```
+brk(NULL) = 0x564868b68000
+
+  Hàm `brk`** (_break_): Hàm thay đổi kích thước của vùng nhớ **Heap** (vùng nhớ dùng để cấp phát động cho chương trình). , phần này ở HEAP ( read only )
+```
+- Dòng 4: Cấp phát vùng RAM trống đầu tiên
+```
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6724a76000
+```
+Dòng 5: Kiểm tra file cấu hình ưu tiên
+
+```
+access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+```
+Dòng 6 đến 9: Mở và đọc Sổ địa chỉ thư viện
+
+```
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3 newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=21228, ...}, AT_EMPTY_PATH) = 0 
+mmap(NULL, 21228, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6724a70000 close(3) = 0
+```
+- **Ý nghĩa từng dòng:**
+    - **`openat`**: Mở file `/etc/ld.so.cache` (Sổ địa chỉ chứa vị trí các thư viện). Trả về mã định danh file (File Descriptor) là **`3`**.
+    - **`newfstatat`**: Kiểm tra thông tin file số `3`. Kết quả cho biết đây là file thông thường (`S_IFREG`), quyền `0644`, kích thước `21228` bytes.
+    - **`mmap`**: Ánh xạ toàn bộ `21228` bytes của file số `3` này vào RAM với quyền chỉ đọc (`PROT_READ`) để tra cứu cho nhanh.
+    - **`close(3)`**: Đóng file số `3` lại vì đã ánh xạ xong vào RAM, giải phóng tài nguyên.
+
+Dòng 10 đến 16: Mở và đọc cấu trúc Thư viện C (`libc.so.6`)
+```
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+ read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P\237\2\0\0\0\0\0"..., 832) = 832 
+ pread64(3, "...", 784, 64) = 784 pread64(3, "...", 48, 848) = 48 pread64(3, "...", 68, 896) = 68 
+ newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=2220400, ...}, AT_EMPTY_PATH) = 0
+  pread64(3, "...", 784, 64) = 784
+```
+
+Dòng 17 đến 22: Phân chia các phân vùng bảo mật cho Thư viện C trên RAM
+```
+mmap(NULL, 2264656, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f6724847000 mprotect(0x7f672486f000, 2023424, PROT_NONE) = 0 mmap(0x7f672486f000, 1658880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000) = 0x7f672486f000 mmap(0x7f6724a04000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1bd000) = 0x7f6724a04000 mmap(0x7f6724a5d000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x215000) = 0x7f6724a5d000 mmap(0x7f6724a63000, 52816, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f6724a63000 close(3) = 0
+```
+- **Ý nghĩa:** Hệ thống tiến hành nạp thư viện C vào RAM tại địa chỉ `0x7f6724847000`.
+- **`mprotect`** (_memory protection_) đặt vùng nhớ hơn 2MB này về trạng thái `PROT_NONE` (Không cho ai làm gì cả) để xóa trắng an toàn, sau đó dùng tiếp các lệnh `mmap` kèm cờ `MAP_FIXED` để chia nhỏ vùng nhớ này thành các khu vực bảo mật:
+    - Khu vực 1 (`PROT_READ|PROT_EXEC`): Chỉ cho **Đọc và Thực thi** mã lệnh của thư viện C (Cấm ghi đè để tránh virus).
+    - Khu vực 2 (`PROT_READ`): Chỉ cho **Đọc** dữ liệu hằng số.
+    - Khu vực 3 (`PROT_READ|PROT_WRITE`): Cho phép **Đọc và Ghi** các biến dữ liệu động của thư viện.
+    - Cuối cùng, `close(3)` đóng file thư viện C lại vì toàn bộ ruột của nó đã được phân bổ an toàn trên RAM.
+Dòng 24 đến 28: Khởi tạo Quản lý Luồng (Thread) cho tiến trình `dd`
+```
+mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6724844000 arch_prctl(ARCH_SET_FS, 0x7f6724844740) = 0 set_tid_address(0x7f6724844a10) = 2884 set_robust_list(0x7f6724844a20, 24) = 0 rseq(0x7f67248450e0, 0x20, 0, 0x53053053) = 0
+```
+Dòng 29 đến 31: Khóa bảo mật bộ nhớ (Hậu nạp thư viện)
+```
+mprotect(0x7f6724a5d000, 16384, PROT_READ) = 0 mprotect(0x564862500000, 4096, PROT_READ) = 0 mprotect(0x7f6724ab0000, 8192, PROT_READ) = 0
+```
+**Ý nghĩa:** Chuyển các vùng nhớ chứa bảng tra cứu địa chỉ hàm (bảng GOT/PLT) sang chế độ Chỉ đọc (`PROT_READ`). Cơ chế này gọi là **RELRO (Relocation Read-Only)**, ngăn chặn hacker ghi đè địa chỉ hàm để hack hệ thống
+Dòng 32 đến 36: Thiết lập Giới hạn tài nguyên và Tín hiệu ngắt
+```
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+munmap(0x7f6724a70000, 21228) = 0
+rt_sigaction(SIGINT, NULL, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+rt_sigaction(SIGUSR1, {sa_handler=0x5648624f48a0, ...}, NULL, 8) = 0
+rt_sigaction(SIGINT, {sa_handler=0x5648624f4890, ...}, NULL, 8) = 0
+
+```
+- **`prlimit64`**: Kiểm tra giới hạn bộ nhớ Stack của hệ thống (ở đây là 8MB - `8192*1024`).
+- **`munmap`**: Hủy ánh xạ vùng nhớ 21228 bytes của file `ld.so.cache` ở đầu lệnh vì không cần dùng nữa, trả lại RAM cho máy.
+- **`rt_sigaction`**: Cài đặt cách `dd` phản ứng khi nhận tín hiệu từ người dùng. Ví dụ: khi bạn nhấn `Ctrl + C` (`SIGINT`), hàm xử lý đặc biệt của `dd` sẽ bắt lấy để dừng ghi và in ra báo cáo ngay lập tức chứ không chết ngậm ngùi.
+Dòng 37 đến 39: Lấy số ngẫu nhiên và mở rộng bộ nhớ Heap
+```
+Heapgetrandom("\x65\x02\xb6\x3e\x1a\x1e\x62\x1e", 8, GRND_NONBLOCK) = 8 brk(NULL) = 0x564868b68000 brk(0x564868b89000) = 0x564868b89000
+
+```
+Đoạn còn lại: Khởi tạo Ngôn ngữ và Định dạng (Locale) 
+- Chuẩn bị đầu vào: Mở "vòi nước" `/dev/zero`
+	```
+  openat(AT_FDCWD, "/dev/zero", O_RDONLY) = 3
+ dup2(3, 0) = 0
+  close(3) = 0 
+  lseek(0, 0, SEEK_CUR) = 0
+	```
+	- Mở đích đến ổ đĩa `/dev/sda`
+	```
+openat(AT_FDCWD, "/dev/sda", O_WRONLY|O_CREAT|O_TRUNC|O_DIRECT, 0666) = 3 dup2(3, 1) = 1 close(3) = 0
+	```
+	- **`openat`**: Mở ổ đĩa `/dev/sda` với một loạt cờ cấu hình quan trọng:
+	- `O_WRONLY`: Chỉ ghi dữ liệu (_Write Only_).
+	- `O_CREAT` và `O_TRUNC`: Tạo mới hoặc xóa trắng file nếu có sẵn (đối với ổ đĩa vật lý thì cờ này chỉ mang tính thủ tục).
+	- **`O_DIRECT`**: **Cực kỳ quan trọng!**
+		
+		Đây chính là cờ kích hoạt chế độ **Direct I/O** (bỏ qua bộ nhớ đệm). Hệ điều hành sẽ ép dữ liệu phải đập thẳng xuống phần cứng ổ đĩa, cấm không cho lưu tạm trên RAM để tăng tính thực tế và an toàn cho việc ghi đĩa.
+	- Kết quả: Trả về mã số file tạm thời là **`3`**.
+		- **`dup2(3, 1)`**: `dd` ghi dữ liệu ra **Standard Output (Mã số là 1)**. Hàm này chuyển hướng Standard Output (số 1) thẳng vào file số 3 (`/dev/sda`).
+	- **`close(3)`**: Đóng số 3 lại vì số 1 đã chịu trách nhiệm ghi vào `/dev/sda`
+- Đọc và Ghi 4096 bytes số 0
+	```
+	read(0, "\0\0\0\0..."..., 4096) = 4096
+	 write(1, "\0\0\0\0..."..., 4096) = 4096
+	```
+	- **`read(0, ..., 4096)`**: `dd` thò tay vào file số 0 (`/dev/zero`) để múc ra đúng `4096` bytes dữ liệu. Bạn có thể thấy chuỗi `\0\0\0\0...` chính là các ký tự null (số 0 trống rỗng). Kết quả trả về `= 4096` (đọc thành công 4KB).
+	- **`write(1, ..., 4096)`**: Ngay lập tức, `dd` ném 4096 bytes số 0 vừa đọc được vào file số 1 (`/dev/sda`) để **ghi đè trực tiếp lên vị trí đầu tiên của ổ đĩa**. Kết quả trả về `= 4096` (đã ghi đè thành công, chính thức xóa sổ Master Boot Record hoặc bảng phân vùng của ổ đĩa).
+	```
+	openat(AT_FDCWD, "/usr/share/locale/.../coreutils.mo", O_RDONLY) = -1 ENOENT ...
+	```
+	Tìm kiếm file dịch ngôn ngữ (Thất bại)
+In báo cáo kết quả ra màn hình Terminal
+
+```
+write(2, "1+0 records in\n1+0 records out\n", 31) = 31 write(2, "4096 bytes (4.1 kB, 4.0 KiB) cop"..., 61) = 61 write(2, "\n", 1) = 1 close(2)
+```
+

@@ -60,3 +60,37 @@
 Đây chính là hướng "đưa data path ra khỏi QEMU": guest kick virtqueue, ioeventfd báo thẳng cho SPDK vhost target (poll mode), SPDK xử lý I/O qua NVMe-oF/RDMA rồi irqfd báo hoàn thành. QEMU vCPU thread không dính vào đường I/O. Vòng `KVM_RUN` trong đoạn bạn paste chỉ còn gánh các exit "chậm" hoặc control-path.
 
 Nếu muốn, mình đi sâu vào một phần: luồng exit MMIO với ioeventfd (code `kvm_cpu_exec`), BQL cụ thể giữ ở đâu, hay so sánh IOThread với vhost-user cho workload NVMe.
+
+
+
+Mình vẽ lại thành 3 cột dọc, chữ ngắn hơn, nhìn gọn hơn trên slide:
+
+```mermaid
+flowchart LR
+    subgraph B["Backup / Restore"]
+        direction TB
+        B1["VM"] --> B2["Kho lưu trữ ngoài"] --> B3["Restore"]
+    end
+
+    subgraph M["Live Migration"]
+        direction TB
+        M1["Host A<br/>VM đang chạy"] --> M2["Pre-copy RAM<br/>+ Dirty pages"] --> M3["Host B<br/>Zero Downtime"]
+    end
+
+    subgraph H["High Availability"]
+        direction TB
+        H1["Host sập"] --> H2["Fencing"] --> H3["Restart VM<br/>trên Host khác"]
+    end
+
+    classDef nodeBlue fill:#AEE1FF,stroke:#1565C0,stroke-width:2px,color:#0B2545;
+    classDef nodePurple fill:#E1BEE7,stroke:#6A1B9A,stroke-width:2px,color:#2E0B3D;
+    classDef nodeRed fill:#FFB3B3,stroke:#C62828,stroke-width:2px,color:#4A0E0E;
+    classDef nodeGreen fill:#B9F6CA,stroke:#2E7D32,stroke-width:2px,color:#0B3D0B;
+
+    class B1,M1 nodeBlue
+    class B2,M2,H2 nodePurple
+    class H1 nodeRed
+    class B3,M3,H3 nodeGreen
+```
+
+Nếu 3 cột vẫn chật khi chèn vào Canva, mình tách thành 3 hình nhỏ, mỗi hình 1 khung, bạn xếp ngang trên slide.
